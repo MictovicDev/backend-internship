@@ -39,8 +39,9 @@ This repository provides a set of APIs to fetch cryptocurrency prices and perfor
 2. **Access the APIs**:
 
    - **Get Coin Prices**: `GET /api/coins`
-   - **Convert Coin to USD**: `POST /api/crypto`
    - **Convert Between Coins**: `POST /api/coins`
+   - **Convert Coin to USD**: `POST /api/crypto`
+   
 
 
 *Note: Ensure you have Node.js and npm installed on your machine before running the application.* 
