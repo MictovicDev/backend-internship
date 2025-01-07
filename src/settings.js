@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+//application settings
 const settings = {
     app:{
         name: 'Swaply',

@@ -39,6 +39,7 @@ const convertCrypto = async (req, res) => {
         }
         const price = data[cryptoId].usd;
         const usdValue = price * amount;
+        console.log(price)
         
         return res.status(200).json({
             from: cryptoId,

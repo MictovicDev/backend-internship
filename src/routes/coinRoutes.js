@@ -5,8 +5,8 @@ const router = express.Router();
 
 
 router.get("/coins", getCoins);
-router.post("/coins", convertCoins);
-router.post("/crypto", convertCrypto);
+router.post("/coins/convert", convertCoins);
+router.post("/crypto/convert", convertCrypto);
 
 
 export default router;
