@@ -1,5 +1,3 @@
-require('dotenv').config(); // Load environment variables
-const path = require('path');
 const { makerequest } = require('../utils/helpers/makerequest'); 
 
 const getCoins = async (req, res) => {
@@ -39,7 +37,6 @@ const convertCrypto = async (req, res) => {
                 message: 'Cryptocurrency not found' 
             });
         }
-
         const price = data[cryptoId].usd;
         const usdValue = price * amount;
         
