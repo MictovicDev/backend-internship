@@ -1,24 +1,12 @@
 require('dotenv').config(); // Load environment variables
+const path = require('path');
+const { makerequest } = require('../utils/helpers/makerequest'); 
 
 const getCoins = async (req, res) => {
     try {
-        const apiUrl = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd'; // Replace with the actual API URL
-        const apiKey = process.env.API_KEY; // Access the API key from the environment variable
-
-        const response = await fetch(apiUrl, {
-            method: 'GET',
-            headers: {
-                 accept: 'application/json',
-                'x-cg-demo-api-key': apiKey // Include the API key in the request header
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json(); 
-
+        const apiUrl = 'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd';
+        const data = await makerequest(apiUrl)
+        console.log(data)
         const prices = data.map(coin => ({
             id: coin.id,
             symbol: coin.symbol.toUpperCase(),
@@ -38,32 +26,14 @@ const getCoins = async (req, res) => {
 const convertCrypto = async (req, res) => {
     try{
         const { cryptoId, amount } = req.body;
-
-        
+ 
         const params = new URLSearchParams({
             ids: cryptoId,
             vs_currencies: 'usd'
         });
 
-        const apiUrl = 'https://api.coingecko.com/api/v3/simple/price';
-        const apiKey = process.env.API_KEY;
-
-        const response = await fetch(`${apiUrl}?${params}`, {
-            method: 'GET',
-            headers: {
-                 accept: 'application/json',
-                'x-cg-demo-api-key': apiKey 
-            }
-        });
-       
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log(data)
-
-        
+        const apiUrl = `https://api.coingecko.com/api/v3/simple/price?${params}`;
+        const data = await makerequest(apiUrl)
         if (!data[cryptoId]) {
             return res.status(404).json({ 
                 message: 'Cryptocurrency not found' 
@@ -72,9 +42,6 @@ const convertCrypto = async (req, res) => {
 
         const price = data[cryptoId].usd;
         const usdValue = price * amount;
-
-        console.log(price)
-        console.log(usdValue)
         
         return res.status(200).json({
             from: cryptoId,
@@ -94,22 +61,14 @@ const convertCrypto = async (req, res) => {
 const convertCoins = async(req, res) => {
     try{
         const {from, to, amount} = req.body;
-        const apiUrl = 'https://api.coingecko.com/api/v3/simple/price';
-        const apiKey = process.env.API_KEY;
-
-        const response = await fetch(`${apiUrl}?ids=${from},${to}&vs_currencies=usd`, {
-            method: 'GET',
-            headers: {
-                 accept: 'application/json',
-                'x-cg-demo-api-key': apiKey 
-            }
+        
+        const params = new URLSearchParams({
+            from: from,
+            to: to,
+            vs_currencies: 'usd'
         });
-        console.log(response)
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
+        const apiUrl = `https://api.coingecko.com/api/v3/simple/price?ids=${from},${to}&vs_currencies=usd`;
+        const data = await makerequest(apiUrl)
         conversion_rate = data[from].usd / data[to].usd
         converted = amount * conversion_rate
 
@@ -128,6 +87,10 @@ const convertCoins = async(req, res) => {
     }
 }
 
-module.exports = { getCoins, convertCrypto, convertCoins };
+module.exports = {
+    getCoins,
+    convertCrypto,
+    convertCoins
+};
 
 
