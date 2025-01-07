@@ -1,13 +1,12 @@
 import express from "express";
-// import protectRoute  from "../middlewares/protectroute.js";
-// import {signupUser, loginUser, logoutUser, followUnfollowUser, updateUser, getUserProfile} from "../controllers/userController.js"
-import { getCoins, convertCrypto } from "../controllers/coinsController.js";
+import { getCoins, convertCrypto, convertCoins } from "../controllers/coinsController.js";
 
 const router = express.Router();
 
 
 router.get("/coins", getCoins);
-router.post('/convert', convertCrypto);
+router.post("/coins", convertCoins);
+router.post("/crypto", convertCrypto);
 
 
 export default router;

@@ -38,6 +38,7 @@ const getCoins = async (req, res) => {
 const convertCrypto = async (req, res) => {
     try{
         const { cryptoId, amount } = req.body;
+
         
         const params = new URLSearchParams({
             ids: cryptoId,
@@ -90,8 +91,43 @@ const convertCrypto = async (req, res) => {
 }
 
 
-const 
+const convertCoins = async(req, res) => {
+    try{
+        const {from, to, amount} = req.body;
+        const apiUrl = 'https://api.coingecko.com/api/v3/simple/price';
+        const apiKey = process.env.API_KEY;
 
-module.exports = { getCoins, convertCrypto };
+        const response = await fetch(`${apiUrl}?ids=${from},${to}&vs_currencies=usd`, {
+            method: 'GET',
+            headers: {
+                 accept: 'application/json',
+                'x-cg-demo-api-key': apiKey 
+            }
+        });
+        console.log(response)
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        conversion_rate = data[from].usd / data[to].usd
+        converted = amount * conversion_rate
+
+        return res.status(200).json({
+            from: from,
+            to: to,
+            amount: amount,
+            converted: converted
+        });
+        
+    }
+    catch (error) {
+        console.log(error)
+        console.error('Error fetching data from API:', error.message);
+        res.status(500).json({ message: 'Failed to fetch data from the API' });
+    }
+}
+
+module.exports = { getCoins, convertCrypto, convertCoins };
 
 
