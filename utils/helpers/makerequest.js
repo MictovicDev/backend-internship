@@ -2,14 +2,12 @@ require('dotenv').config();
 
 const  makerequest = async (apiUrl) =>{
 
-     // Replace with the actual API URL
-        const apiKey = process.env.API_KEY; // Access the API key from the environment variable
-
+        const apiKey = process.env.API_KEY;
         const response = await fetch(apiUrl, {
             method: 'GET',
             headers: {
                  accept: 'application/json',
-                'x-cg-demo-api-key': apiKey // Include the API key in the request header
+                'x-cg-demo-api-key': apiKey 
             }
         });
         if (!response.ok) {

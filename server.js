@@ -2,17 +2,20 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import coinRoutes from './routes/coinRoutes.js';
+import settings from './settings.js';
+import cors from 'cors';
 
-
-dotenv.config();
 const app = express();
 
-const PORT = process.env.PORT || 8000;
+const PORT = settings.app['port']
+
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 
+//cors
+app.use(cors(settings.cors));
 
 //Routes
 app.use("/api", coinRoutes)
