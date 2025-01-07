@@ -42,16 +42,5 @@ This repository provides a set of APIs to fetch cryptocurrency prices and perfor
    - **Convert Coin to USD**: `POST /api/convert-to-usd`
    - **Convert Between Coins**: `POST /api/convert-coin`
 
-   Refer to the API documentation for detailed request and response formats.
-
-## Contributing
-
-Contributions are welcome! Please fork the repository and create a new branch for any feature additions or bug fixes. Submit a pull request for review.
-
-## License
-
-This project is licensed under the MIT License.
-
----
 
 *Note: Ensure you have Node.js and npm installed on your machine before running the application.* 
